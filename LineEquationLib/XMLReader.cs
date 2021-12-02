@@ -24,7 +24,7 @@ namespace LineEquationLib
         {
             Int rows = new Int(), col = new Int();
             double[] data = new double[]{} ;
-            GetMatrixParamsFromNode(rows, col, data, node);
+            GetMatrixParamsFromNode(rows, col, ref data, node);
             return  ParseMatrixByRowColData(rows.value, col.value, data);
             
         }
@@ -41,7 +41,7 @@ namespace LineEquationLib
             return fr;
 
         }
-        public void GetMatrixParamsFromNode( Int r, Int c, double[] data, XmlElement node)
+        public void GetMatrixParamsFromNode( Int r, Int c,ref double[] data, XmlElement node)
         {
             foreach (XmlNode child in node.ChildNodes)
             {
@@ -62,7 +62,7 @@ namespace LineEquationLib
             {
                 for (int c = 0; c < col; c++)
                 {
-                    arr[r, c] = data[i];
+                    arr[c, r] = data[i];
                     i++;
                 }
             }
@@ -110,33 +110,13 @@ namespace LineEquationLib
                             case "focus":
                                 foreach (XmlNode child in node.ChildNodes)
                                 {
-                                    if (child.Name == "data") camera.focus = double.Parse(child.Value);
+                                    if (child.Name == "data") camera.focus = double.Parse(child.InnerText);
                                 }
                                 break;
                             
                         }
 
-                        
-                        
-                        
- 
-                        // обходим все дочерние узлы элемента user
-                        foreach (XmlNode childnode in node.ChildNodes)
-                        {
-                            // если узел - company
-                            if (childnode.Name == "company")
-                            {
-                                Console.WriteLine($"Компания: {childnode.InnerText}");
-                            }
-                            // если узел age
-                            if (childnode.Name == "age")
-                            {
-                                Console.WriteLine($"Возраст: {childnode.InnerText}");
-                            }
-                        }
-                        Console.WriteLine();
-                    
-                        
+
                     }
                 }
             }
